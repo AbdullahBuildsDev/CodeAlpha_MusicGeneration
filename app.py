@@ -41,7 +41,7 @@ footer {display:none !important;}
 theme = gr.themes.Soft(primary_hue="indigo", secondary_hue="purple",
                        radius_size="lg", font=["Inter", "system-ui", "sans-serif"])
 
-with gr.Blocks(theme=theme, css=CSS, title="CodeAlpha · AI Music") as demo:
+with gr.Blocks(title="CodeAlpha · AI Music") as demo:
     gr.HTML("""
       <div id='hero'>
         <h1>🎵 AI Music Generation</h1>
@@ -65,4 +65,4 @@ with gr.Blocks(theme=theme, css=CSS, title="CodeAlpha · AI Music") as demo:
     btn.click(do_generate, [n_notes, temperature, key], [audio, midi_file, info])
 
 if __name__ == "__main__":
-    demo.launch(inbrowser=True)
+    demo.launch(inbrowser=True, theme=theme, css=CSS)
