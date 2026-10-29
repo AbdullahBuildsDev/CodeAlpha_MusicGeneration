@@ -1,0 +1,5 @@
+# AI Music Generation - all free & open-source, runs locally.
+torch>=2.2          # LSTM neural network
+numpy>=1.24         # sampling + arrays
+pretty_midi>=0.2.10 # MIDI read/write + built-in audio synthesis (no sound font needed)
+gradio>=4.0         # smooth web UI
