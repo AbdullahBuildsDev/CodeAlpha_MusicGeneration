@@ -27,25 +27,60 @@ def do_generate(n_notes, temperature, mood, progress=gr.Progress()):
 
 
 CSS = """
-.gradio-container {max-width: 820px !important; margin:auto;}
-#hero {text-align:center; padding:26px 18px; border-radius:18px; margin-bottom:14px;
-  background:linear-gradient(120deg,#4361ee 0%,#7209b7 55%,#f72585 100%); color:#fff;
-  box-shadow:0 10px 30px rgba(67,97,238,.35);}
-#hero h1 {font-size:1.9rem; margin:0; font-weight:800;}
-#hero p {opacity:.92; margin:6px 0 0;}
-.info-card {padding:12px 16px; border-radius:12px; background:var(--background-fill-secondary);
-  font-size:.95rem; text-align:center;}
-footer {display:none !important;}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+.gradio-container{
+  --body-background-fill:#09090f; --background-fill-primary:#09090f;
+  --background-fill-secondary:rgba(255,255,255,.03);
+  --block-background-fill:rgba(255,255,255,.04);
+  --block-border-color:rgba(255,255,255,.07); --border-color-primary:rgba(255,255,255,.07);
+  --body-text-color:#ededf3; --body-text-color-subdued:#9a9aa8;
+  --button-primary-background-fill:linear-gradient(92deg,#8b5cf6,#ec4899);
+  --button-primary-background-fill-hover:linear-gradient(92deg,#a78bfa,#f472b6);
+  --button-primary-text-color:#fff; --button-primary-border-color:transparent;
+  --input-background-fill:rgba(255,255,255,.045); --block-radius:18px;
+  font-family:'Inter',system-ui,sans-serif !important;
+  max-width:880px !important; margin:auto !important;
+}
+body{background:
+  radial-gradient(900px 500px at 82% -12%, rgba(236,72,153,.13), transparent 60%),
+  radial-gradient(900px 520px at 8% -4%, rgba(139,92,246,.15), transparent 56%),
+  #09090f !important;}
+#hero{padding:34px 8px 12px; text-align:center;}
+#hero h1{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:2.4rem;
+  margin:0; letter-spacing:-.5px;
+  background:linear-gradient(90deg,#c4b5fd,#f9a8d4); -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent; background-clip:text;}
+#hero p{color:#9a9aa8; margin:9px 0 0; font-size:.97rem; letter-spacing:.2px;}
+.block,.form{backdrop-filter:blur(14px); box-shadow:0 10px 40px rgba(0,0,0,.32) !important;}
+/* When a dropdown is open, let its block/form show the popup (no clipping) */
+.block:has(.options), .form:has(.options){overflow:visible !important; backdrop-filter:none !important;}
+button.primary,button[variant=primary]{font-weight:600 !important; letter-spacing:.3px;
+  box-shadow:0 10px 26px rgba(236,72,153,.26) !important; transition:transform .15s ease;}
+button.primary:hover{transform:translateY(-2px);}
+.info-card{padding:14px 18px; border-radius:14px; background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07); text-align:center; color:#d2d2e0; font-size:.95rem;}
+label span{color:#b9b9c6 !important; font-weight:500 !important;}
+/* Dropdown popup must be solid + visible (not glassy/transparent) */
+ul.options, .options, div[role=listbox]{
+  background:#15151e !important; border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:12px !important; box-shadow:0 14px 40px rgba(0,0,0,.55) !important;
+  z-index:1000 !important; backdrop-filter:none !important; overflow:auto !important;}
+ul.options li, .options .item, li[role=option], [role=option]{
+  color:#ededf3 !important; background:transparent !important;}
+ul.options li:hover, .options .item:hover, .options .item.selected,
+li[role=option]:hover, [role=option][aria-selected=true]{
+  background:rgba(139,92,246,.30) !important; color:#fff !important;}
+footer{display:none !important;}
 """
 
-theme = gr.themes.Soft(primary_hue="indigo", secondary_hue="purple",
-                       radius_size="lg", font=["Inter", "system-ui", "sans-serif"])
+theme = gr.themes.Base(primary_hue="violet", neutral_hue="slate")
 
 with gr.Blocks(title="CodeAlpha · AI Music") as demo:
     gr.HTML("""
       <div id='hero'>
-        <h1>🎵 AI Music Generation</h1>
-        <p>An LSTM neural network composes brand-new melodies · CodeAlpha AI Internship</p>
+        <h1>AI Music Studio</h1>
+        <p>Neural melodies, composed live — with chords &amp; bass in your chosen mood</p>
       </div>""")
 
     with gr.Row():
