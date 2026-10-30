@@ -76,6 +76,19 @@ footer{display:none !important;}
 
 theme = gr.themes.Base(primary_hue="violet", neutral_hue="slate")
 
+# Force dark mode regardless of the visitor's system light/dark setting.
+HEAD = """
+<script>
+(function(){
+  var u = new URL(window.location);
+  if (u.searchParams.get('__theme') !== 'dark') {
+    u.searchParams.set('__theme','dark');
+    window.location.replace(u.toString());
+  }
+})();
+</script>
+"""
+
 with gr.Blocks(title="CodeAlpha · AI Music") as demo:
     gr.HTML("""
       <div id='hero'>
@@ -100,4 +113,4 @@ with gr.Blocks(title="CodeAlpha · AI Music") as demo:
     btn.click(do_generate, [n_notes, temperature, mood], [audio, midi_file, info])
 
 if __name__ == "__main__":
-    demo.launch(inbrowser=True, theme=theme, css=CSS)
+    demo.launch(inbrowser=True, theme=theme, css=CSS, head=HEAD)
