@@ -17,11 +17,11 @@ import gradio as gr
 from src import musicgen
 
 
-def do_generate(n_notes, temperature, key, progress=gr.Progress()):
+def do_generate(n_notes, temperature, mood, progress=gr.Progress()):
     midi_path, (sr, wav) = musicgen.generate(
         n_notes=int(n_notes), temperature=float(temperature),
-        key=key, progress=progress)
-    info = (f"🎼 Generated {int(n_notes)} notes in <b>{key}</b> · "
+        mood=mood, progress=progress)
+    info = (f"🎼 Generated a <b>{mood}</b> piece · melody + chords + bass · "
             f"{len(wav)/sr:.1f}s · creativity {temperature:.1f}")
     return (sr, wav), midi_path, f"<div class='info-card'>{info}</div>"
 
@@ -50,8 +50,8 @@ with gr.Blocks(title="CodeAlpha · AI Music") as demo:
 
     with gr.Row():
         with gr.Column(scale=2):
-            key = gr.Dropdown(["C major", "A minor", "G major", "D minor"],
-                              value="C major", label="🎹 Key / mood")
+            mood = gr.Dropdown(list(musicgen.MOODS), value="😊 Happy",
+                               label="🎭 Mood", info="Each mood has its own scale, tempo & chords")
             n_notes = gr.Slider(40, 320, value=160, step=20, label="🎶 Length (notes)")
             temperature = gr.Slider(0.4, 1.5, value=1.0, step=0.1,
                                     label="✨ Creativity (higher = more adventurous)")
@@ -62,7 +62,7 @@ with gr.Blocks(title="CodeAlpha · AI Music") as demo:
             midi_file = gr.File(label="Download MIDI (.mid)")
             info = gr.HTML()
 
-    btn.click(do_generate, [n_notes, temperature, key], [audio, midi_file, info])
+    btn.click(do_generate, [n_notes, temperature, mood], [audio, midi_file, info])
 
 if __name__ == "__main__":
     demo.launch(inbrowser=True, theme=theme, css=CSS)
